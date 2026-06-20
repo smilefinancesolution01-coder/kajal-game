@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kajal ❤️ Aarif - Love Journey</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(to bottom,#87ceeb,#ffffff);
+overflow:hidden;
+}
+
+.header{
+width:100%;
+background:#ff4d6d;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-around;
+font-weight:bold;
+font-size:18px;
+}
+
+.game{
+width:100vw;
+height:85vh;
+position:relative;
+background:linear-gradient(#8fd3ff,#dff6ff);
+overflow:hidden;
+}
+
+.road{
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+width:300px;
+height:100%;
+background:#555;
+border-left:10px solid #fff;
+border-right:10px solid #fff;
+}
+
+.player{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+font-size:60px;
+z-index:10;
+transition:.1s;
+}
+
+.goal{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+font-size:60px;
+z-index:10;
+}
+
+.goal-name{
+position:absolute;
+top:90px;
+left:50%;
+transform:translateX(-50%);
+background:#ff4d6d;
+color:white;
+padding:5px 15px;
+border-radius:20px;
+}
+
+.obstacle{
+position:absolute;
+font-size:50px;
+}
+
+.coin{
+position:absolute;
+font-size:35px;
+}
+
+.controls{
+position:fixed;
+bottom:10px;
+width:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+
+.controls button{
+width:70px;
+height:70px;
+font-size:30px;
+border:none;
+border-radius:50%;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+.row{
+display:flex;
+gap:15px;
+}
+
+.message{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:10px;
+font-size:30px;
+display:none;
+box-shadow:0 0 20px rgba(0,0,0,.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div>🪙 Coins: <span id="coins">0</span></div>
+<div>❤️ Lives: <span id="lives">3</span></div>
+<div>🏆 Level: <span id="level">1</span></div>
+</div>
+
+<div class="game" id="game">
+
+<div class="road"></div>
+
+<div class="goal" id="goal">👦</div>
+<div class="goal-name">Aarif</div>
+
+<div class="player" id="player">👧</div>
+
+<div class="obstacle" style="top:180px;left:48%;">🐕</div>
+<div class="obstacle" style="top:330px;left:52%;">🚧</div>
+<div class="obstacle" style="top:500px;left:46%;">🛵</div>
+
+<div class="coin" style="top:250px;left:46%;">🪙</div>
+<div class="coin" style="top:420px;left:54%;">🪙</div>
+<div class="coin" style="top:600px;left:49%;">🪙</div>
+
+<div class="message" id="message"></div>
+
+</div>
+
+<div class="controls">
+<button onclick="moveUp()">⬆</button>
+
+<div class="row">
+<button onclick="moveLeft()">⬅</button>
+<button onclick="moveDown()">⬇</button>
+<button onclick="moveRight()">➡</button>
+</div>
+</div>
+
+<script>
+
+let player=document.getElementById("player");
+let message=document.getElementById("message");
+
+let x=window.innerWidth/2;
+let y=window.innerHeight-150;
+
+let coins=0;
+let lives=3;
+let level=1;
+
+function updatePlayer(){
+player.style.left=x+"px";
+player.style.top=y+"px";
+checkGoal();
+}
+
+function moveLeft(){
+x-=20;
+updatePlayer();
+}
+
+function moveRight(){
+x+=20;
+updatePlayer();
+}
+
+function moveUp(){
+y-=20;
+updatePlayer();
+}
+
+function moveDown(){
+y+=20;
+updatePlayer();
+}
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.key==="ArrowLeft") moveLeft();
+if(e.key==="ArrowRight") moveRight();
+if(e.key==="ArrowUp") moveUp();
+if(e.key==="ArrowDown") moveDown();
+
+});
+
+function checkGoal(){
+
+if(y<120){
+
+message.style.display="block";
+message.innerHTML="❤️ Kajal reached Aarif!<br>Level Complete";
+
+level++;
+
+document.getElementById("level").innerText=level;
+
+setTimeout(()=>{
+message.style.display="none";
+y=window.innerHeight-150;
+updatePlayer();
+},2000);
+
+}
+
+}
+
+updatePlayer();
+
+</script>
+
+</body>
+</html>
