@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kajal ❤️ Aarif - Love Journey</title>
+<title>Kajal ❤️ Aarif - Love Journey V3</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -14,78 +15,95 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:linear-gradient(to bottom,#87ceeb,#ffffff);
 overflow:hidden;
+background:#87ceeb;
+}
+
+#startScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:999;
+color:white;
+}
+
+#startScreen h1{
+font-size:50px;
+margin-bottom:20px;
+}
+
+#startBtn{
+padding:15px 40px;
+font-size:24px;
+border:none;
+border-radius:30px;
+cursor:pointer;
 }
 
 .header{
-width:100%;
+height:60px;
 background:#ff4d6d;
-color:white;
-padding:15px;
 display:flex;
 justify-content:space-around;
+align-items:center;
+color:white;
 font-weight:bold;
-font-size:18px;
 }
 
-.game{
-width:100vw;
-height:85vh;
+#game{
 position:relative;
-background:linear-gradient(#8fd3ff,#dff6ff);
+width:100vw;
+height:calc(100vh - 60px);
 overflow:hidden;
+background:#c8f7c5;
 }
 
 .road{
 position:absolute;
 left:50%;
 transform:translateX(-50%);
-width:300px;
+width:320px;
 height:100%;
 background:#555;
-border-left:10px solid #fff;
-border-right:10px solid #fff;
+border-left:8px solid white;
+border-right:8px solid white;
 }
 
-.player{
+#player{
 position:absolute;
+width:70px;
+height:70px;
 bottom:20px;
 left:50%;
 transform:translateX(-50%);
 font-size:60px;
-z-index:10;
-transition:.1s;
+z-index:100;
 }
 
-.goal{
+#goal{
 position:absolute;
 top:20px;
 left:50%;
 transform:translateX(-50%);
 font-size:60px;
-z-index:10;
 }
 
-.goal-name{
+#message{
 position:absolute;
-top:90px;
+top:50%;
 left:50%;
-transform:translateX(-50%);
-background:#ff4d6d;
-color:white;
-padding:5px 15px;
-border-radius:20px;
-}
-
-.obstacle{
-position:absolute;
-font-size:50px;
-}
-
-.coin{
-position:absolute;
-font-size:35px;
+transform:translate(-50%,-50%);
+background:white;
+padding:20px;
+border-radius:15px;
+display:none;
+font-size:30px;
+z-index:500;
 }
 
 .controls{
@@ -101,60 +119,57 @@ gap:10px;
 .controls button{
 width:70px;
 height:70px;
-font-size:30px;
+font-size:28px;
 border:none;
 border-radius:50%;
 background:#ff4d6d;
 color:white;
-cursor:pointer;
 }
 
 .row{
 display:flex;
-gap:15px;
+gap:10px;
 }
 
-.message{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:20px;
-border-radius:10px;
-font-size:30px;
-display:none;
-box-shadow:0 0 20px rgba(0,0,0,.2);
-}
 </style>
 </head>
 
 <body>
 
+<div id="startScreen">
+<h1>Kajal ❤️ Aarif</h1>
+<p>Help Kajal reach Aarif</p>
+<br>
+<button id="startBtn">Start Game</button>
+</div>
+
 <div class="header">
-<div>🪙 Coins: <span id="coins">0</span></div>
+<div>🪙 Score: <span id="score">0</span></div>
 <div>❤️ Lives: <span id="lives">3</span></div>
 <div>🏆 Level: <span id="level">1</span></div>
 </div>
 
-<div class="game" id="game">
+<div id="game">
 
 <div class="road"></div>
 
-<div class="goal" id="goal">👦</div>
-<div class="goal-name">Aarif</div>
+<div id="goal">👦</div>
 
-<div class="player" id="player">👧</div>
+  <!-- Coins -->
+<div class="coin" id="coin1">🪙</div>
+<div class="coin" id="coin2">🪙</div>
+<div class="coin" id="coin3">🪙</div>
 
-<div class="obstacle" style="top:180px;left:48%;">🐕</div>
-<div class="obstacle" style="top:330px;left:52%;">🚧</div>
-<div class="obstacle" style="top:500px;left:46%;">🛵</div>
+<!-- Cars -->
+<div class="car" id="car1">🚗</div>
+<div class="car" id="car2">🚕</div>
 
-<div class="coin" style="top:250px;left:46%;">🪙</div>
-<div class="coin" style="top:420px;left:54%;">🪙</div>
-<div class="coin" style="top:600px;left:49%;">🪙</div>
+<!-- Bike -->
+<div class="bike" id="bike1">🛵</div>
 
-<div class="message" id="message"></div>
+<div id="player">👧</div>
+
+<div id="message"></div>
 
 </div>
 
@@ -171,14 +186,17 @@ box-shadow:0 0 20px rgba(0,0,0,.2);
 <script>
 
 let player=document.getElementById("player");
-let message=document.getElementById("message");
 
-let x=window.innerWidth/2;
-let y=window.innerHeight-150;
-
-let coins=0;
+let score=0;
 let lives=3;
 let level=1;
+
+let x=window.innerWidth/2;
+let y=window.innerHeight-180;
+
+document.getElementById("startBtn").onclick=function(){
+document.getElementById("startScreen").style.display="none";
+}
 
 function updatePlayer(){
 player.style.left=x+"px";
@@ -186,25 +204,10 @@ player.style.top=y+"px";
 checkGoal();
 }
 
-function moveLeft(){
-x-=20;
-updatePlayer();
-}
-
-function moveRight(){
-x+=20;
-updatePlayer();
-}
-
-function moveUp(){
-y-=20;
-updatePlayer();
-}
-
-function moveDown(){
-y+=20;
-updatePlayer();
-}
+function moveLeft(){x-=20;updatePlayer();}
+function moveRight(){x+=20;updatePlayer();}
+function moveUp(){y-=20;updatePlayer();}
+function moveDown(){y+=20;updatePlayer();}
 
 document.addEventListener("keydown",(e)=>{
 
@@ -217,18 +220,20 @@ if(e.key==="ArrowDown") moveDown();
 
 function checkGoal(){
 
-if(y<120){
+if(y<100){
 
-message.style.display="block";
-message.innerHTML="❤️ Kajal reached Aarif!<br>Level Complete";
+document.getElementById("message").style.display="block";
+
+document.getElementById("message").innerHTML=
+"❤️ Kajal reached Aarif!";
 
 level++;
 
 document.getElementById("level").innerText=level;
 
 setTimeout(()=>{
-message.style.display="none";
-y=window.innerHeight-150;
+document.getElementById("message").style.display="none";
+y=window.innerHeight-180;
 updatePlayer();
 },2000);
 
