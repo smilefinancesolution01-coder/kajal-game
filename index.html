@@ -596,5 +596,184 @@ clearInterval(vehicleMove);
 </script>
 
 <!-- =========================
+PART 04 START
+========================= -->
+
+<style>
+
+#startScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#ff4f72,#ff8fab);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:5000;
+color:white;
+text-align:center;
+}
+
+#startScreen h1{
+font-size:50px;
+margin-bottom:20px;
+}
+
+#startBtn{
+padding:15px 40px;
+font-size:24px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+}
+
+#pauseBtn{
+position:fixed;
+top:80px;
+right:10px;
+z-index:1000;
+padding:10px;
+font-size:20px;
+}
+
+#victoryScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+z-index:6000;
+text-align:center;
+}
+
+#victoryScreen h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+</style>
+
+<div id="startScreen">
+<h1>❤️ Kajal & Aarif ❤️</h1>
+<p>Help Kajal reach Aarif safely</p>
+<br>
+<button id="startBtn">🎮 Start Game</button>
+</div>
+
+<button id="pauseBtn">⏸️</button>
+
+<div id="victoryScreen">
+<h1>🏆 YOU WIN 🏆</h1>
+<h2>Kajal reached Aarif ❤️</h2>
+<br>
+<button onclick="location.reload()">🔄 Play Again</button>
+</div>
+
+<script>
+
+// Best Score
+let bestScore=
+localStorage.getItem("bestScore") || 0;
+
+function saveBestScore(){
+
+if(score > bestScore){
+
+bestScore = score;
+
+localStorage.setItem(
+"bestScore",
+bestScore
+);
+
+}
+
+}
+
+// Start Screen
+document.getElementById("startBtn")
+.onclick=function(){
+
+document.getElementById(
+"startScreen"
+).style.display="none";
+
+};
+
+// Pause System
+let paused=false;
+
+document.getElementById("pauseBtn")
+.onclick=function(){
+
+paused=!paused;
+
+if(paused){
+
+this.innerHTML="▶️";
+
+}else{
+
+this.innerHTML="⏸️";
+
+}
+
+};
+
+// Upgrade Goal Check
+checkGoal=function(){
+
+if(y<100){
+
+level++;
+
+document.getElementById("level")
+.innerText=level;
+
+trafficSpeed+=1;
+
+showLevelPopup();
+
+y=window.innerHeight-220;
+
+updatePlayer();
+
+if(level>=3){
+startRain();
+}
+
+if(level>=5){
+activateNightMode();
+}
+
+if(level>=10){
+
+saveBestScore();
+
+document.getElementById(
+"victoryScreen"
+).style.display="flex";
+
+}
+
+}
+
+};
+
+</script>
+
+<!-- =========================
+PART 04 END
+========================= -->
+<!-- =========================
 PART 03 END
 ========================= -->
